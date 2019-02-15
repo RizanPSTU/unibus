@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -41,6 +42,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
 
     LocationManager locationManager;
     LocationListener locationListener;
+
 
     public void studentBtn(View view) {
         Log.i("riz", "Student D_list btn click korse");

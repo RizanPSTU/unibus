@@ -1,7 +1,9 @@
 package com.back4app.quickstartexampleapp;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,9 +40,13 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        Intent intent =getIntent();
+
+        LatLng studentlocation = new LatLng(intent.getDoubleExtra("studentLatitude",0), intent.getDoubleExtra("studentLongitude",0));
+        LatLng driverlocation = new LatLng(intent.getDoubleExtra("requestLatitude",0), intent.getDoubleExtra("requestLongitude",0));
+        Log.i("riz", "Student ar->"+studentlocation);
+        Log.i("riz", "Driver ar->"+driverlocation);
+        mMap.addMarker(new MarkerOptions().position(driverlocation).title("Student"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(driverlocation,8));
     }
 }
