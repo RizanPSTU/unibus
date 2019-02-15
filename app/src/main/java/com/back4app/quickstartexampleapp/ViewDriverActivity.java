@@ -16,7 +16,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class ViewDriverActivity extends AppCompatActivity {
 
@@ -27,7 +35,35 @@ public class ViewDriverActivity extends AppCompatActivity {
     LocationListener locationListener;
 
     public void updateListView(Location location){
+        if(location != null) {
+            drivers.clear();
+            final ParseGeoPoint geoPointLocation = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
+            ParseQuery<ParseUser> query = ParseUser.getQuery();
+            query.setLimit(15);
+            query.whereEqualTo("studentOrDriver","driver");
+            //query.whereNear("location",geoPointLocation);
+            query.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> objects, ParseException e) {
+                    if(e == null){
+                        if(objects.size() > 0){
+                            for(ParseObject object:objects){
+                                Double distanceInKM = geoPointLocation.distanceInKilometersTo((ParseGeoPoint) object.get("location"));
+                                Double distanceOneDP = (double) Math.round(distanceInKM * 10) / 10;
+                                drivers.add(distanceOneDP.toString()+" km away");
+                            }
 
+                        }else{
+                            drivers.add("There is no active driver");
+                        }
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+
+
+
+        }
     }
 
     @Override
@@ -52,7 +88,8 @@ public class ViewDriverActivity extends AppCompatActivity {
 
         setTitle("Bus Driver List");
         driverListView = (ListView) findViewById(R.id.driverListView);
-        drivers.add("Test");
+        drivers.clear();
+        drivers.add("Getting Bus Drivers");
         arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,drivers);
         driverListView.setAdapter(arrayAdapter);
 

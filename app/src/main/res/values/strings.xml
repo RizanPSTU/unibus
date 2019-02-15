@@ -9,5 +9,6 @@
     <string name="app_name">Unibus</string>
     <string name="title_activity_student">Map</string>
     <string name="title_activity_driver">Map</string>
+    <string name="title_activity_student_driver">Map</string>
 
 </resources>

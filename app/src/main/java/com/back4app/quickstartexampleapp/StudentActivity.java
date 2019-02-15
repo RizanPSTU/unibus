@@ -45,7 +45,6 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
     public void studentBtn(View view) {
         Log.i("riz", "Student D_list btn click korse");
 
-
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -78,23 +77,25 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         Log.i("riz", "Student Logout hoilo");
 
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Location");
-        query.whereEqualTo("username",ParseUser.getCurrentUser().getUsername());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if(e==null){
-                    if(objects.size() > 0){
-                        for(ParseObject object : objects){
-                            object.deleteInBackground();
+        if(ParseUser.getCurrentUser() != null) {
+            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e == null) {
+                        if (objects.size() > 0) {
+                            for (ParseObject object : objects) {
+                                object.deleteInBackground();
+                            }
                         }
+                        ParseUser.logOut();
+                        //ParseUser.logOutInBackground();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                     }
-                    //ParseUser.logOut();
-                    ParseUser.logOutInBackground();
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    startActivity(intent);
                 }
-            }
-        });
+            });
+        }
     }
 
 
@@ -151,6 +152,18 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onLocationChanged(Location location) {
                 updateMap(location);
+                if(ParseUser.getCurrentUser() != null){
+                ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(),location.getLongitude()));
+                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null){
+                            //Log.i("riz", "Student ar location save hoitase");
+                        }
+
+                    }
+                });
+                }
             }
 
             @Override

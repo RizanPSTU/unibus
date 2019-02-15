@@ -23,7 +23,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class DriverActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -34,6 +37,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
     public void driverLogout(View view){
         Log.i("riz", "Driver Logout hoilo");
+        //ParseUser.logOutInBackground();
         ParseUser.logOut();
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         startActivity(intent);
@@ -98,6 +102,17 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             @Override
             public void onLocationChanged(Location location) {
                 updateMap(location);
+                if(ParseUser.getCurrentUser() != null) {
+                    ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                //Log.i("riz", "Driver ar location save hoitase");
+                            }
+                        }
+                    });
+                }
             }
 
             @Override
