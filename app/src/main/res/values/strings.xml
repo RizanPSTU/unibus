@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="back4app_server_url">http://ec2-18-222-158-117.us-east-2.compute.amazonaws.com:80/parse/</string>
+
+    <!-- Change the following strings as required -->
+    <string name="back4app_app_id">469ab1493a8630a2698dfe799279f833684df0c4</string>
+    <string name="back4app_client_key">b1a9579de09cc89f135f8e5185c36c464ebffc3d</string>
+
+    <string name="app_name">Unibus</string>
+    <string name="title_activity_student">Map</string>
+    <string name="title_activity_driver">Map</string>
+
+</resources>
