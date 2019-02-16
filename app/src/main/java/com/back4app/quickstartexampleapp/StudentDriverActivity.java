@@ -16,21 +16,28 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDriverActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -41,13 +48,53 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
     LocationListener locationListener;
     String driverUsername;
     Handler handler = new Handler();
+    TextView infoTextView;
 
-    public void updateMap(Location location){
-        LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        //Log.i("riz", "Akhn ar lovation student ar ->"+location);
+    public void updateMap(Location location,ParseGeoPoint requestLocation){
+        LatLng userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng driverLatLng = new LatLng(requestLocation.getLatitude(), requestLocation.getLongitude());
+        Log.i("riz", "student ar location->"+userLatLng);
+        Log.i("riz", "driver ar location ->"+driverLatLng);
+
+        final ParseGeoPoint userLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        //final ParseGeoPoint driverLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+
+        Double distanceInKM = userLocation.distanceInMilesTo(requestLocation);
+        Double distanceOneDP = (double) Math.round(distanceInKM * 10) / 10;
+        if(distanceOneDP < 0.001){
+            infoTextView.setText("Bus is almost here!!");
+        }else {
+            infoTextView.setText("Distance " + distanceOneDP+"km");
+        }
+        ArrayList<Marker> markers = new ArrayList<>();
+
+        mMap.clear();
+
+        markers.add(mMap.addMarker(new MarkerOptions().position(driverLatLng).title("Bus Driver Location")));
+        markers.add(mMap.addMarker(new MarkerOptions().position(userLatLng).title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))));
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : markers) {
+            builder.include(marker.getPosition());
+        }
+        LatLngBounds bounds = builder.build();
+
+
+        int padding = 60; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+        mMap.animateCamera(cu);
+
+        /*
+        Double distanceInKM = userLatLng.distanceInKilometersTo(requestGeoPoint);
+        Double distanceOneDP = (double) Math.round(distanceInKM * 10) / 10;
+        drivers.add(distanceOneDP.toString() + " km away");*/
+
+
+        /*
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(userLocation).title("Student Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,8));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,8));*/
 
     }
 
@@ -68,7 +115,7 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
                 if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    updateMap(lastKnownLocation);
+                    //updateMap(lastKnownLocation);
                 }
             }
         }
@@ -82,6 +129,7 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        infoTextView = (TextView) findViewById(R.id.infoTextView);
     }
 
 
@@ -100,12 +148,12 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
 
         Intent intent =getIntent();
 
-        LatLng studentlocation = new LatLng(intent.getDoubleExtra("studentLatitude",0), intent.getDoubleExtra("studentLongitude",0));
-        LatLng driverlocation = new LatLng(intent.getDoubleExtra("requestLatitude",0), intent.getDoubleExtra("requestLongitude",0));
+        //LatLng studentlocation = new LatLng(intent.getDoubleExtra("studentLatitude",0), intent.getDoubleExtra("studentLongitude",0));
+        //LatLng driverlocation = new LatLng(intent.getDoubleExtra("requestLatitude",0), intent.getDoubleExtra("requestLongitude",0));
         driverUsername =intent.getStringExtra("driverUsername");
-        Log.i("riz", "Driver ar username->"+driverUsername);
-        Log.i("riz", "Student ar->"+studentlocation);
-        Log.i("riz", "Driver ar->"+driverlocation);
+        //Log.i("riz", "Driver ar username->"+driverUsername);
+        //Log.i("riz", "Student ar->"+studentlocation);
+       // Log.i("riz", "Driver ar->"+driverlocation);
         //mMap.addMarker(new MarkerOptions().position(driverlocation).title("Student"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(driverlocation,8));
 
@@ -113,7 +161,7 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
-            public void onLocationChanged(Location location) {
+            public void onLocationChanged(final Location location) {
                 //updateMap(location);
                 if(ParseUser.getCurrentUser() != null){
                     ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(),location.getLongitude()));
@@ -132,7 +180,19 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
                 query.findInBackground(new FindCallback<ParseUser>() {
                     @Override
                     public void done(List<ParseUser> objects, ParseException e) {
-
+                        if(objects.size() == 1) {
+                            for (ParseObject object : objects) {
+                                final ParseGeoPoint requestGeoPoint = (ParseGeoPoint) object.get("location");
+                                if(requestGeoPoint != null) {
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            updateMap(location,requestGeoPoint);
+                                        }
+                                    },1000);
+                                }
+                            }
+                        }
                     }
                 });
             }
@@ -164,7 +224,7 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                 if (lastKnownLocation != null){
-                    updateMap(lastKnownLocation);
+                    //updateMap(lastKnownLocation);
                 }
             }
 
