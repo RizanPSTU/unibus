@@ -42,22 +42,25 @@ public class MainActivity extends AppCompatActivity {
         if(userTypeSwitch.isChecked()){
             userType ="driver";
         }
+        if(ParseUser.getCurrentUser() !=null) {
+            ParseUser.getCurrentUser().put("studentOrDriver", userType);
+            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        if (userTypeSwitch.isChecked()) {
+                            Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
+                        } else {
+                            Log.i("riz", "Parse ar studentOrDriver a save hoiilo student ");
+                        }
+                        changeActivity();
 
-        ParseUser.getCurrentUser().put("studentOrDriver",userType);
-        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if(e ==null){
-                    if(userTypeSwitch.isChecked()){
-                        Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
-                    }else{
-                        Log.i("riz", "Parse ar studentOrDriver a save hoiilo student ");
                     }
-                    changeActivity();
-
                 }
-            }
-        });
+            });
+        }else{
+            Log.i("riz", "Current user null ");
+        }
 
     }
     @Override

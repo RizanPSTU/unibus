@@ -84,16 +84,18 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> objects, ParseException e) {
+
                     if (e == null) {
                         if (objects.size() > 0) {
                             for (ParseObject object : objects) {
                                 object.deleteInBackground();
+                                Log.i("riz", "Delete hoitase location");
                             }
+                            ParseUser.logOut();
+                            //ParseUser.logOutInBackground();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
                         }
-                        ParseUser.logOut();
-                        //ParseUser.logOutInBackground();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
                     }
                 }
             });
@@ -106,7 +108,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         //Log.i("riz", "Akhn ar lovation student ar ->"+location);
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(userLocation).title("Student Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,14));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,8));
 
     }
 

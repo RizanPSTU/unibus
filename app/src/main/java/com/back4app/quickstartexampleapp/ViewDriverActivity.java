@@ -44,6 +44,7 @@ public class ViewDriverActivity extends AppCompatActivity {
 
     ArrayList<Double> requestLatitude = new ArrayList<Double>();
     ArrayList<Double> requestLongitude = new ArrayList<Double>();
+    ArrayList<String> driverUsername = new ArrayList<String>();
 
     Handler handler = new Handler();
 
@@ -80,6 +81,9 @@ public class ViewDriverActivity extends AppCompatActivity {
                                     drivers.add(distanceOneDP.toString() + " km away");
                                     requestLatitude.add(requestGeoPoint.getLatitude());
                                     requestLongitude.add(requestGeoPoint.getLongitude());
+                                    driverUsername.add((String) object.get("username"));
+                                    //Log.i("riz", "Driver username->"+object.get("username"));
+
                                 }
                             }
 
@@ -127,7 +131,7 @@ public class ViewDriverActivity extends AppCompatActivity {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                   // Log.i("riz", "ListView ar on click pos->"+position);
+                   //Log.i("riz", "ListView ar on click pos->"+position);
 
                     if(requestLatitude.size() > position && requestLongitude.size() > position && lastKnownLocation != null){
                         Intent intent = new Intent(getApplicationContext(),StudentDriverActivity.class);
@@ -135,6 +139,7 @@ public class ViewDriverActivity extends AppCompatActivity {
                         intent.putExtra("requestLongitude",requestLongitude.get(position));
                         intent.putExtra("studentLatitude",lastKnownLocation.getLatitude());
                         intent.putExtra("studentLongitude",lastKnownLocation.getLongitude());
+                        intent.putExtra("driverUsername",driverUsername.get(position));
                         startActivity(intent);
                     }else{
                         Log.i("riz", "3ta shorte problem");

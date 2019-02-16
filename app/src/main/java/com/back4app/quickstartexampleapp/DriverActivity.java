@@ -54,7 +54,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         //Log.i("riz", "Akhn ar lovation driver ar ->"+location);
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(userLocation).title("Student Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,14));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,8));
 
     }
 
