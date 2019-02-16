@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
@@ -108,8 +109,8 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
         //Log.i("riz", "Akhn ar lovation student ar ->"+location);
         mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(userLocation).title("Student Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,8));
+        mMap.addMarker(new MarkerOptions().position(userLocation).title("Student Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.mansm)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
 
     }
 
