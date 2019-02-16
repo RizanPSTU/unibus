@@ -42,7 +42,6 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         ParseUser.logOut();
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         startActivity(intent);
-
     }
 
     public void driverBtn(View view){
