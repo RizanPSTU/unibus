@@ -27,7 +27,7 @@
         android:layout_marginRight="25dp"
         android:layout_marginBottom="30dp"
         android:onClick="studentBtn"
-        android:text="D_List" />
+        android:text="Active Buses" />
 
     <Button
         android:id="@+id/stnLogout"

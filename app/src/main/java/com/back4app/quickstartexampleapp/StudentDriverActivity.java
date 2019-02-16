@@ -70,8 +70,8 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
 
         mMap.clear();
 
-        markers.add(mMap.addMarker(new MarkerOptions().position(driverLatLng).title("Bus Driver Location")));
-        markers.add(mMap.addMarker(new MarkerOptions().position(userLatLng).title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))));
+        markers.add(mMap.addMarker(new MarkerOptions().position(driverLatLng).title("Bus Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.bussm))));
+        markers.add(mMap.addMarker(new MarkerOptions().position(userLatLng).title("Your Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.mansm))));
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Marker marker : markers) {
@@ -80,7 +80,7 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
         LatLngBounds bounds = builder.build();
 
 
-        int padding = 60; // offset from edges of the map in pixels
+        int padding = 70; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
         mMap.animateCamera(cu);
@@ -99,10 +99,12 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
     }
 
     public void stnLogout(View view){
+        /*
         ParseUser.logOut();
         //ParseUser.logOutInBackground();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+        */
     }
 
 
