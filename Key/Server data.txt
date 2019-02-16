@@ -1,0 +1,30 @@
+ssh -i "BitnamiKey.pem" ubuntu@ec2-18-222-158-117.us-east-2.compute.amazonaws.com
+ssh -i "BitnamiKey.pem" ubuntu@ec2-18-222-158-117.us-east-2.compute.amazonaws.comvar express = require('express');
+var ParseServer = require('parse-server').ParseServer;
+var app = express();
+// Specify the connection string for your mongodb database
+// and the location to your Parse cloud code
+var api = new ParseServer({
+    databaseURI: "mongodb://root:0v2IgbAzfToH@127.0.0.1:27017/bitnami_parse",
+    cloud: "./node_modules/parse-server/lib/cloud-code/Parse.Cloud.js",
+    appId: "469ab1493a8630a2698dfe799279f833684df0c4",
+    masterKey: "b1a9579de09cc89f135f8e5185c36c464ebffc3d",
+    fileKey: "6baef540c461d156d7c35b2e1c05e37a43562b50",
+    serverURL: "http://18.222.158.117:80/parse"
+});
+// Serve the Parse API on the /parse URL prefix
+app.use('/parse', api);
+
+var port = 1337;
+app.listen(port, function() {
+    console.log('parse-server running on port ' + port);
+});
+
+//Parse Dashboard
+var ParseDashboard = require('parse-dashboard');
+var dashboard = new ParseDashboard({
+    apps: [
+	
+ec2-18-222-158-117.us-east-2.compute.amazonaws.com
+0v2IgbAzfToH
+user
