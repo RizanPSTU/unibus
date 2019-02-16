@@ -179,7 +179,7 @@ public class ViewDriverActivity extends AppCompatActivity {
         };
 
         if (Build.VERSION.SDK_INT < 23) {
-            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             Toast.makeText(this, "SDK < 23", Toast.LENGTH_SHORT).show();
         }else{
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){

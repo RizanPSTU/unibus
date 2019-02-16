@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -76,7 +77,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         startActivity(intent);
     }
 
-    public void stnLogout(View view){
+    public void stnLogout(View view) {
         Log.i("riz", "Student Logout hoilo");
         ParseUser.logOut();
         //ParseUser.logOutInBackground();
@@ -105,12 +106,12 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
 
-    public void updateMap(Location location){
+    public void updateMap(Location location) {
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
         //Log.i("riz", "Akhn ar lovation student ar ->"+location);
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(userLocation).title("Student Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.mansm)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
 
     }
 
@@ -118,9 +119,9 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == 1){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     updateMap(lastKnownLocation);
@@ -158,17 +159,17 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onLocationChanged(Location location) {
                 updateMap(location);
-                if(ParseUser.getCurrentUser() != null){
-                ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(),location.getLongitude()));
-                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null){
-                            //Log.i("riz", "Student ar location save hoitase User class a");
-                        }
+                if (ParseUser.getCurrentUser() != null) {
+                    ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                //Log.i("riz", "Student ar location save hoitase User class a");
+                            }
 
-                    }
-                });
+                        }
+                    });
                 }
             }
 
@@ -189,7 +190,17 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         };
 
         if (Build.VERSION.SDK_INT < 23) {
-            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             Toast.makeText(this, "SDK < 23", Toast.LENGTH_SHORT).show();
         }else{
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
