@@ -25,6 +25,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.DeleteCallback;
+import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
@@ -71,10 +73,56 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
 
     public void stnLogout(View view) {
         Log.i("riz", "Student Logout hoilo");
-        ParseUser.logOut();
+        //ParseUser.logOut();
         //ParseUser.logOutInBackground();
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        /*ParseUser.logOutInBackground(new LogOutCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    if (ParseUser.getCurrentUser() != null){
+                        ParseUser.getCurrentUser().deleteInBackground(new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null){
+                                    Log.i("riz", "Logout hoise and delete hoise");
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                }else{
+                                    Log.i("riz", "Logout hoise and :( kintu delete hy nai");
+                                }
+                            }
+                        });
+                    }else {
+                        Log.i("riz", "delete korbo ki current user null :////");
+                    }
+                } else {
+                    //somethingWentWrong();
+                    Log.i("riz", "Logout thik moto hy nai student ar");
+                }
+            }
+        });
+
+*/
+        final ParseUser currentUserStu = ParseUser.getCurrentUser();
+        currentUserStu.deleteInBackground(new DeleteCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    ParseUser.logOutInBackground(new LogOutCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null){
+                                Log.i("riz", "Delete hoise and logout hoitase");
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                } else {
+                    Log.i("riz", "Delete hy nai logout o na");
+                }
+            }
+        });
+        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        //startActivity(intent);
 /*
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Location");
         if(ParseUser.getCurrentUser() != null) {

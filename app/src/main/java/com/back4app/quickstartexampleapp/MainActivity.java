@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Switch;
 
 import com.parse.LogInCallback;
@@ -15,6 +16,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class MainActivity extends AppCompatActivity {
+
+
 
     public void changeActivity(){
         if(ParseUser.getCurrentUser().get("studentOrDriver").equals("student")){
@@ -31,10 +34,43 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public  void getStarted(View view)
+    public void mainParseCheck(View view){
+        Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
+        Button startBtn = (Button) findViewById(R.id.startBtn);
+        Button login = (Button) findViewById(R.id.login);
+
+        Log.i("riz", "Start btn a click porseee ");
+        userTypeSwitch.setVisibility(View.VISIBLE);
+        login.setVisibility(View.VISIBLE);
+        startBtn.setVisibility(View.INVISIBLE);
+        if(ParseUser.getCurrentUser() == null){
+            ParseAnonymousUtils.logIn(new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException e) {
+                    if(e == null){
+                        Log.i("riz", "Anonymous login hoise student or driver posondo korbe");
+                    }else{
+                        Log.i("riz", "Anonymous login failed!!!!!! ");
+                    }
+                }
+            });
+        }else {
+            if(ParseUser.getCurrentUser().get("studentOrDriver") != null){
+                Log.i("riz", "Agey session a j uuser type a  login hoiisilo shei activity nitasi --->"+ParseUser.getCurrentUser().get("studentOrDriver"));
+                changeActivity();
+            }else {
+                Log.i("riz", "Agey kono session chiilo na kintu agey anoymous login null na");
+            }
+        }
+    }
+
+    public  void getStarted(View view) // login button click korle ai function click hy :33
     {
-        //Log.i("riz", "getstart botton click korse");
+        Log.i("riz", "getstart botton click korse");
         final Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
+        //Button startBtn = (Button) findViewById(R.id.startBtn);
+        //Button login = (Button) findViewById(R.id.login);
+
         Log.i("riz", "User type True driver or False Student-->"+String.valueOf(userTypeSwitch.isChecked()));
         String userType ="student";
 
@@ -69,28 +105,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
-        if(ParseUser.getCurrentUser() == null){
-            ParseAnonymousUtils.logIn(new LogInCallback() {
-                @Override
-                public void done(ParseUser user, ParseException e) {
-                    if(e == null){
-                        Log.i("riz", "Anonymous login hoise student or driver posondo korbe");
-                    }else{
-                        Log.i("riz", "Anonymous login failed!!!!!! ");
-                    }
-                }
-            });
-        }else {
-            if(ParseUser.getCurrentUser().get("studentOrDriver") != null){
-                Log.i("riz", "Agey session a j uuser type a  login hoiisilo shei activity nitasi --->"+ParseUser.getCurrentUser().get("studentOrDriver"));
-                changeActivity();
-            }else {
-                Log.i("riz", "Agey kono session chiilo na kintu agey anoymous login null na");
-            }
-        }
 
         // Save the current Installation to Back4App
-        ParseInstallation.getCurrentInstallation().saveInBackground();
+        //ParseInstallation.getCurrentInstallation().saveInBackground();
 
     }
 

@@ -14,13 +14,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         app:srcCompat="@drawable/diu" />
+
     <Switch
+        android:id="@+id/userTypeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:id="@+id/userTypeSwitch" />
+        android:visibility="invisible"/>
 
     <TextView
         android:text="Driver"
@@ -47,14 +49,32 @@
         android:layout_marginEnd="14dp" />
 
     <Button
-        android:text="Get Started"
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userTypeSwitch"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:id="@+id/button"
-        android:onClick="getStarted" />
+        android:layout_marginStart="158dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="158dp"
+        android:layout_marginBottom="234dp"
+        android:onClick="getStarted"
+        android:text="Login"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/startBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userTypeSwitch"
+        android:layout_marginStart="158dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="158dp"
+        android:layout_marginBottom="234dp"
+        android:onClick="mainParseCheck"
+        android:text="Start"
+        />
+
+
 
 
 </RelativeLayout>
