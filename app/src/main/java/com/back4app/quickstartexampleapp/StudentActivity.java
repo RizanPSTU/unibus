@@ -210,7 +210,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
 
                         }
                     });
-                    Log.i("riz", "Location :"+location);
+                    //Log.i("riz", "Location :"+location);
                 }
             }
 

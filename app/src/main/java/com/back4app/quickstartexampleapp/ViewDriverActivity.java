@@ -46,21 +46,16 @@ public class ViewDriverActivity extends AppCompatActivity {
     Handler handler = new Handler();
 
     public  void listUpdater (){
+        Log.i("riz", "1 sec por por run hy check");
         arrayAdapter.notifyDataSetChanged();
     }
 
     public void updateListView(Location location){
         if(location != null) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    listUpdater();
-                }
-            },1000);
             final ParseGeoPoint geoPointLocation = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             query.setLimit(15);
-            query.whereEqualTo("studentOrDriver","driver");
+            query.whereEqualTo("active","OK");
             query.whereNear("location",geoPointLocation);
             query.findInBackground(new FindCallback<ParseUser>() {
                 @Override
@@ -109,6 +104,17 @@ public class ViewDriverActivity extends AppCompatActivity {
         }
     }
 
+
+    private Runnable listUpdater = new Runnable() {
+        @Override
+        public void run() {
+            Log.i("riz", "Bus ar list update hoitase :3 check");
+            handler.postDelayed(this,1000);
+            listUpdater ();
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +126,9 @@ public class ViewDriverActivity extends AppCompatActivity {
         drivers.add("Getting Bus Drivers");
         arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,drivers);
         driverListView.setAdapter(arrayAdapter);
-        arrayAdapter.notifyDataSetChanged();
+
+        listUpdater.run();
+
         driverListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

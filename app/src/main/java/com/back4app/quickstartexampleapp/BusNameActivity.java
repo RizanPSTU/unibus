@@ -121,14 +121,29 @@ public class BusNameActivity extends AppCompatActivity {
                                 @Override
                                 public void done(ParseException e) {
                                     if(e == null){
-                                        Intent intent = new Intent(getApplicationContext(), DriverActivity.class);
-                                        intent.putExtra("BUS",buses.get(position));
-                                        intent.putExtra("ObjectID",busObjectId);
-                                        intent.putExtra("POS",position);
-                                        startActivity(intent);
-                                        Log.i("riz", "Intent a ja pathaitasi bus :33 -->)"+buses.get(position));
-                                        Log.i("riz", "Intent a ja pathaitasi postion :33 -->)"+position);
-                                        Log.i("riz", "Intent a ja pathaitasi obejct id :33 -->)"+busObjectId);
+                                        if (ParseUser.getCurrentUser() != null) {
+                                            ParseUser.getCurrentUser().put("active","OK");
+                                            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    if (e == null) {
+                                                        //Log.i("riz", "Student ar location save hoitase User class a");
+                                                        Intent intent = new Intent(getApplicationContext(), DriverActivity.class);
+                                                        intent.putExtra("BUS",buses.get(position));
+                                                        intent.putExtra("ObjectID",busObjectId);
+                                                        intent.putExtra("POS",position);
+
+                                                        Log.i("riz", "Intent a ja pathaitasi bus :33 -->)"+buses.get(position));
+                                                        Log.i("riz", "Intent a ja pathaitasi postion :33 -->)"+position);
+                                                        Log.i("riz", "Intent a ja pathaitasi obejct id :33 -->)"+busObjectId);
+
+                                                        startActivity(intent);
+                                                    }
+
+                                                }
+                                            });
+                                            //Log.i("riz", "Location :"+location);
+                                        }
 
                                     }
                                 }

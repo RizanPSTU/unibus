@@ -100,6 +100,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                 }
             });
         }else{
+
             final ParseUser currentUserStu = ParseUser.getCurrentUser();
             currentUserStu.deleteInBackground(new DeleteCallback() {
                 public void done(ParseException e) {
@@ -119,6 +120,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                     }
                 }
             });
+
         }
 
 
@@ -213,19 +215,19 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             @Override
             public void onLocationChanged(Location location) {
                 updateMap(location);
-                /*
                 if (ParseUser.getCurrentUser() != null) {
                     ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
                     ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                //Log.i("riz", "Driver ar location save hoitase");
+                                //Log.i("riz", "Student ar location save hoitase User class a");
                             }
+
                         }
                     });
+                    //Log.i("riz", "Location :"+location);
                 }
-                */
             }
 
             @Override
