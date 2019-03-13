@@ -16,6 +16,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,27 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
     Handler handler = new Handler();
     TextView infoTextView;
 
+
+    boolean lockCheck =true;
+
+    public void lockFunc(View view){
+        Log.i("riz", "Lock a click ");
+        Button unlock = (Button) findViewById(R.id.unlock);
+        Button lock = (Button) findViewById(R.id.lock);
+        unlock.setVisibility(View.VISIBLE);
+        lock.setVisibility(View.INVISIBLE);
+        lockCheck = true;
+    }
+
+    public void unlockFunc(View view){
+        Log.i("riz", "UnLock a click ");
+        Button unlock = (Button) findViewById(R.id.unlock);
+        Button lock = (Button) findViewById(R.id.lock);
+        unlock.setVisibility(View.INVISIBLE);
+        lock.setVisibility(View.VISIBLE);
+        lockCheck = false;
+    }
+
     public void updateMap(Location location,ParseGeoPoint requestLocation){
         LatLng userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         LatLng driverLatLng = new LatLng(requestLocation.getLatitude(), requestLocation.getLongitude());
@@ -83,7 +105,10 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
         int padding = 70; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
-        mMap.animateCamera(cu);
+        if(lockCheck){
+            mMap.animateCamera(cu);
+        }
+
 
         /*
         Double distanceInKM = userLatLng.distanceInKilometersTo(requestGeoPoint);
