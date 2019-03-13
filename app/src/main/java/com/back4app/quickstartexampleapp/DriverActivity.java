@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,11 +26,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.DeleteCallback;
+import com.parse.GetCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.util.ArrayList;
 
 public class DriverActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -37,6 +43,10 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
     LocationManager locationManager;
     LocationListener locationListener;
+    String bus="";
+    int position;
+
+    ArrayList<String> busObjectId = new ArrayList<String>();
 
     public void driverLogout(View view) {
         Log.i("riz", "Driver Logout hoilo");
@@ -51,8 +61,16 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                         public void done(ParseException e) {
                             if (e == null){
                                 Log.i("riz", "Delete hoise and logout hoitase");
+
+                                if (bus !=null && position != -1){
+                                    
+                                }
+
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
+
+
+
                             }
                         }
                     });
@@ -100,6 +118,31 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
+        TextView busDriving = (TextView) findViewById(R.id.busDriving);
+
+
+        Intent intent = getIntent();
+        bus = intent.getStringExtra("BUS");
+        position = intent.getIntExtra("POS",-1);
+        Log.i("riz", "Bus name  :) --->"+bus);
+        Log.i("riz", "Position aise --->"+position);
+
+        if (bus !=null && position != -1){
+            busObjectId =intent.getStringArrayListExtra("ObjectID");
+            Log.i("riz", "Position ar objectID --->"+busObjectId.get(position));
+
+            busDriving.setText("You are driving "+bus);
+        }else {
+            if (bus ==null){
+                Log.i("riz", "Bus null");
+            }else{
+                Log.i("riz", "bus null ba lenght < 1 :((( prrbb ---> "+Integer.toString(bus.length()));
+            }
+
+        }
+
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -180,7 +223,6 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                     updateMap(lastKnownLocation);
                 }
             }
-
         }
 
 

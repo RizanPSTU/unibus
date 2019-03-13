@@ -98,7 +98,7 @@ public class BusNameActivity extends AppCompatActivity {
 
         BusListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 //Log.i("riz", "Bus list ar on click pos->"+position);
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Buses");
                 String objectId =busObjectId.get(position);
@@ -115,9 +115,24 @@ public class BusNameActivity extends AppCompatActivity {
                         if(e==null && object != null){
                             //Log.i("riz", "Error null :)))");
                             object.put("username",userName);
-                            object.put("location", "Akhon o kori nai kicchu");
+                            object.put("location", "Akhon o kori nai kicchu, ashole lagey nai akhono");
                             object.put("active_status", "driverON");
-                            object.saveInBackground();
+                            object.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if(e == null){
+                                        Intent intent = new Intent(getApplicationContext(), DriverActivity.class);
+                                        intent.putExtra("BUS",buses.get(position));
+                                        intent.putExtra("ObjectID",busObjectId);
+                                        intent.putExtra("POS",position);
+                                        startActivity(intent);
+                                        Log.i("riz", "Intent a ja pathaitasi bus :33 -->)"+buses.get(position));
+                                        Log.i("riz", "Intent a ja pathaitasi postion :33 -->)"+position);
+                                        Log.i("riz", "Intent a ja pathaitasi obejct id :33 -->)"+busObjectId);
+
+                                    }
+                                }
+                            });
                         }else {
                             Log.i("riz", "Error othoba current onject null)");
                         }
