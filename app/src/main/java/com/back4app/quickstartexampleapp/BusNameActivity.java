@@ -46,7 +46,7 @@ public class BusNameActivity extends AppCompatActivity {
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Buses");
             query.setLimit(15);
-            query.whereEqualTo("Running","yes");
+            query.whereEqualTo("active_status","driverOFF");
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> objects, ParseException e) {
