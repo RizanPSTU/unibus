@@ -25,28 +25,30 @@
         android:visibility="invisible"/>
 
     <TextView
-        android:text="Driver"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView2"
         android:layout_alignBaseline="@+id/userTypeSwitch"
         android:layout_alignBottom="@+id/userTypeSwitch"
-        android:layout_toRightOf="@+id/userTypeSwitch"
-        android:layout_toEndOf="@+id/userTypeSwitch"
+        android:layout_marginStart="14dp"
         android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp" />
+        android:layout_toEndOf="@+id/userTypeSwitch"
+        android:layout_toRightOf="@+id/userTypeSwitch"
+        android:text="Driver"
+        android:visibility="invisible" />
 
     <TextView
-        android:text="Student"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3"
         android:layout_alignBaseline="@+id/userTypeSwitch"
         android:layout_alignBottom="@+id/userTypeSwitch"
-        android:layout_toLeftOf="@+id/userTypeSwitch"
-        android:layout_toStartOf="@+id/userTypeSwitch"
+        android:layout_marginEnd="14dp"
         android:layout_marginRight="14dp"
-        android:layout_marginEnd="14dp" />
+        android:layout_toStartOf="@+id/userTypeSwitch"
+        android:layout_toLeftOf="@+id/userTypeSwitch"
+        android:text="Student"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/login"

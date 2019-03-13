@@ -210,6 +210,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
 
                         }
                     });
+                    Log.i("riz", "Location :"+location);
                 }
             }
 
@@ -243,6 +244,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             Toast.makeText(this, "SDK < 23", Toast.LENGTH_SHORT).show();
         }else{
+            Toast.makeText(this, "SDK > 23", Toast.LENGTH_SHORT).show();
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1 );
             }else{

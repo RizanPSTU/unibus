@@ -24,6 +24,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.DeleteCallback;
+import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
@@ -39,13 +41,34 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
     public void driverLogout(View view) {
         Log.i("riz", "Driver Logout hoilo");
         //ParseUser.logOutInBackground();
-        ParseUser.logOut();
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        //ParseUser.logOut();
+        final ParseUser currentUserStu = ParseUser.getCurrentUser();
+        currentUserStu.deleteInBackground(new DeleteCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    ParseUser.logOutInBackground(new LogOutCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null){
+                                Log.i("riz", "Delete hoise and logout hoitase");
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                } else {
+                    Log.i("riz", "Delete hy nai logout o na");
+                }
+            }
+        });
+        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        //startActivity(intent);
     }
 
     public void driverBtn(View view) {
         Log.i("riz", "Driver S_list btn click korse");
+        Intent intent = new Intent(getApplicationContext(), BusNameActivity.class);
+        startActivity(intent);
     }
 
 
@@ -102,6 +125,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             @Override
             public void onLocationChanged(Location location) {
                 updateMap(location);
+                /*
                 if (ParseUser.getCurrentUser() != null) {
                     ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
                     ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
@@ -113,6 +137,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                         }
                     });
                 }
+                */
             }
 
             @Override
