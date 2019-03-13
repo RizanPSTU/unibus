@@ -60,6 +60,11 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         lockCheck = false;
     }
 
+    public void scheduleList(View view){
+        Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
+        startActivity(intent);
+    }
+
     public void studentBtn(View view) {
         Log.i("riz", "Student D_list btn click korse");
 /*
