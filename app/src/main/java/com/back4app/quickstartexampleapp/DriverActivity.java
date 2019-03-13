@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,8 +46,29 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
     LocationListener locationListener;
     String bus="";
     int position;
+    boolean lockCheck =true;
 
     ArrayList<String> busObjectId = new ArrayList<String>();
+
+
+    public void lockFunc(View view){
+        Log.i("riz", "Lock a click ");
+        Button unlock = (Button) findViewById(R.id.unlock);
+        Button lock = (Button) findViewById(R.id.lock);
+        unlock.setVisibility(View.VISIBLE);
+        lock.setVisibility(View.INVISIBLE);
+        lockCheck = true;
+    }
+
+    public void unlockFunc(View view){
+        Log.i("riz", "UnLock a click ");
+        Button unlock = (Button) findViewById(R.id.unlock);
+        Button lock = (Button) findViewById(R.id.lock);
+        unlock.setVisibility(View.INVISIBLE);
+        lock.setVisibility(View.VISIBLE);
+        lockCheck = false;
+    }
+
 
     public void driverLogout(View view) {
         //Log.i("riz", "Driver Logout hoilo");
@@ -142,7 +164,10 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         //Log.i("riz", "Akhn ar lovation driver ar ->"+location);
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(userLocation).title("Student Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.bussm)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+        if(lockCheck){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+        }
+
 
     }
 
