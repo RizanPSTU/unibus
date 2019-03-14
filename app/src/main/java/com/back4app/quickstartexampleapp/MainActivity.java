@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
@@ -53,8 +54,33 @@ public class MainActivity extends AppCompatActivity {
                 public void done(ParseUser user, ParseException e) {
                     if(e == null){
                         Log.i("riz", "Anonymous login hoise student or driver posondo korbe");
+
+
+                        if(ParseUser.getCurrentUser() !=null) {
+                            ParseUser.getCurrentUser().put("studentOrDriver", "driver");
+                            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        if (true) {
+                                            Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
+                                            //Toast.makeText(MainActivity.this, "Login hoise", Toast.LENGTH_LONG).show();
+
+                                        } else {
+                                            Log.i("riz", "Parse ar studentOrDriver a save hoiilo student ");
+                                        }
+                                        //changeActivity();
+
+                                    }
+                                }
+                            });
+                        }else{
+                            Log.i("riz", "Current user null ");
+                        }
+
                     }else{
                         Log.i("riz", "Anonymous login failed!!!!!! ");
+                        Toast.makeText(MainActivity.this, "No Internet :(", Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -64,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 changeActivity();
             }else {
                 Log.i("riz", "Agey kono session chiilo na kintu agey anoymous login null na");
+                Toast.makeText(MainActivity.this, "Network problem", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -89,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     if (e == null) {
                         if (true) {
                             Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
+
                         } else {
                             Log.i("riz", "Parse ar studentOrDriver a save hoiilo student ");
                         }

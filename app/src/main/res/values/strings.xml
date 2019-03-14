@@ -6,7 +6,7 @@
     <string name="back4app_app_id">12345</string>
     <string name="back4app_client_key">rizan</string>
 
-    <string name="app_name">Unibus</string>
+    <string name="app_name">DIU Buses</string>
     <string name="title_activity_student">Map</string>
     <string name="title_activity_driver">Map</string>
     <string name="title_activity_student_driver">Map</string>

@@ -46,6 +46,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
     LocationListener locationListener;
     String bus="";
     int position;
+    String objectidS="";
     boolean lockCheck =true;
 
     ArrayList<String> busObjectId = new ArrayList<String>();
@@ -75,10 +76,10 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         //ParseUser.logOutInBackground();
         //ParseUser.logOut();
 
-        if (bus !=null && position != -1){
+        if (bus !=null && objectidS != null){
             //Log.i("riz", "Bus list ar on click pos->"+position);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Buses");
-            String objectId = busObjectId.get(position);
+            String objectId = objectidS;
             Log.i("riz", objectId);
             // Retrieve the object by id
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -121,7 +122,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
                 }
             });
-        }else{
+        }else {
 
             final ParseUser currentUserStu = ParseUser.getCurrentUser();
             currentUserStu.deleteInBackground(new DeleteCallback() {
@@ -130,7 +131,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                         ParseUser.logOutInBackground(new LogOutCallback() {
                             @Override
                             public void done(ParseException e) {
-                                if (e == null){
+                                if (e == null) {
                                     Log.i("riz", "Delete hoise and logout hoitase");
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
@@ -142,11 +143,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                     }
                 }
             });
-
         }
-
-
-
 
         //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         //startActivity(intent);
@@ -194,11 +191,19 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_driver);
         TextView busDriving = (TextView) findViewById(R.id.busDriving);
 
+        objectidS= (String) ParseUser.getCurrentUser().get("objectid");
+        bus=(String) ParseUser.getCurrentUser().get("busname");
+
         Intent intent = getIntent();
-        bus = intent.getStringExtra("BUS");
+        if(bus ==null){
+            bus = intent.getStringExtra("BUS");
+        }
+
+
         position = intent.getIntExtra("POS",-1);
         Log.i("riz", "Bus name  :) --->"+bus);
         Log.i("riz", "Position aise --->"+position);
+        Log.i("riz", "Objectid --->"+objectidS);
 
         if (bus !=null && position != -1){
             busObjectId =intent.getStringArrayListExtra("ObjectID");
@@ -229,6 +234,12 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
         }
 
+        if (bus !=null && objectidS != null) {
+            //busObjectId = intent.getStringArrayListExtra("ObjectID");
+            //Log.i("riz", "Position ar objectID --->" + busObjectId.get(position));
+
+            busDriving.setText("You are driving " + bus);
+        }
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

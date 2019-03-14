@@ -35,6 +35,7 @@ public class BusNameActivity extends AppCompatActivity {
     ArrayList<String> busObjectId = new ArrayList<String>();
 
     ArrayAdapter arrayAdapter;
+    String objectidS ="";
 
     Handler handler = new Handler();
 
@@ -102,11 +103,12 @@ public class BusNameActivity extends AppCompatActivity {
                 //Log.i("riz", "Bus list ar on click pos->"+position);
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Buses");
                 String objectId =busObjectId.get(position);
+                objectidS =objectId;
                 final String userName = ParseUser.getCurrentUser().getUsername();
                 Log.i("riz", objectId);
                 // Retrieve the object by id
                 query.getInBackground(objectId, new GetCallback<ParseObject>() {
-                    public void done(ParseObject object, ParseException e) {
+                    public void done(final ParseObject object, ParseException e) {
                         if(object ==null){
                             Log.i("riz", "object null");
                         }else{
@@ -122,7 +124,9 @@ public class BusNameActivity extends AppCompatActivity {
                                 public void done(ParseException e) {
                                     if(e == null){
                                         if (ParseUser.getCurrentUser() != null) {
+                                            Log.i("riz", "objectid--->"+objectidS);
                                             ParseUser.getCurrentUser().put("active","OK");
+                                            ParseUser.getCurrentUser().put("objectid",objectidS);
                                             ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
                                                 @Override
                                                 public void done(ParseException e) {
