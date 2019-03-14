@@ -46,7 +46,7 @@ public class ViewDriverActivity extends AppCompatActivity {
     Handler handler = new Handler();
 
     public  void listUpdater (){
-        Log.i("riz", "1 sec por por run hy check");
+        //Log.i("riz", "1 sec por por run hy check");
         arrayAdapter.notifyDataSetChanged();
     }
 
@@ -67,10 +67,11 @@ public class ViewDriverActivity extends AppCompatActivity {
                         if(objects.size() > 0){
                             for(ParseObject object:objects){
                                 ParseGeoPoint requestGeoPoint = (ParseGeoPoint) object.get("location");
+                                String busname = (String) object.get("busname");
                                 if(requestGeoPoint != null) {
                                     Double distanceInKM = geoPointLocation.distanceInKilometersTo(requestGeoPoint);
                                     Double distanceOneDP = (double) Math.round(distanceInKM * 10) / 10;
-                                    drivers.add(distanceOneDP.toString() + " km away");
+                                    drivers.add(busname+" is "+distanceOneDP.toString() + " km away");
                                     requestLatitude.add(requestGeoPoint.getLatitude());
                                     requestLongitude.add(requestGeoPoint.getLongitude());
                                     driverUsername.add((String) object.get("username"));
@@ -108,7 +109,7 @@ public class ViewDriverActivity extends AppCompatActivity {
     private Runnable listUpdater = new Runnable() {
         @Override
         public void run() {
-            Log.i("riz", "Bus ar list update hoitase :3 check");
+            //Log.i("riz", "Bus ar list update hoitase :3 check");
             handler.postDelayed(this,1000);
             listUpdater ();
 

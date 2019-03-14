@@ -180,7 +180,9 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    updateMap(lastKnownLocation);
+                    if(lastKnownLocation != null){
+                        updateMap(lastKnownLocation);
+                    }
                 }
             }
         }
@@ -191,7 +193,6 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
         TextView busDriving = (TextView) findViewById(R.id.busDriving);
-
 
         Intent intent = getIntent();
         bus = intent.getStringExtra("BUS");
@@ -204,6 +205,21 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             Log.i("riz", "Position ar objectID --->"+busObjectId.get(position));
 
             busDriving.setText("You are driving "+bus);
+
+            if (ParseUser.getCurrentUser() != null) {
+                ParseUser.getCurrentUser().put("busname",bus);
+                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Log.i("riz", "Bus name save hoise User class a");
+                        }
+
+                    }
+                });
+                //Log.i("riz", "Location :"+location);
+            }
+
         }else {
             if (bus ==null){
                 Log.i("riz", "Bus null");
@@ -293,6 +309,26 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
                 if (lastKnownLocation != null){
                     updateMap(lastKnownLocation);
+                }
+
+                if (lastKnownLocation != null){
+                    //updateMap(lastKnownLocation);
+                    Log.i("riz", "Last known location null na");
+                    if (ParseUser.getCurrentUser() != null) {
+                        ParseUser.getCurrentUser().put("location", new ParseGeoPoint(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()));
+                        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.i("riz", "Driver ar last location save hoitase User class a");
+                                }
+
+                            }
+                        });
+                        //Log.i("riz", "Location :"+location);
+                    }
+                }else{
+                    Log.i("riz", "Last known location null :33");
                 }
             }
         }

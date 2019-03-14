@@ -78,6 +78,12 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
         Log.i("riz", "student ar location->"+userLatLng);
         Log.i("riz", "driver ar location ->"+driverLatLng);
 
+        if(driverLatLng == null || userLatLng == null){
+            Toast.makeText(this, "Driver is offline", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),StudentActivity.class);
+            startActivity(intent);
+        }
+
         final ParseGeoPoint userLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         //final ParseGeoPoint driverLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
 

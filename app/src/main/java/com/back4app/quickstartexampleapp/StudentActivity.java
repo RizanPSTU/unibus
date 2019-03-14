@@ -191,7 +191,10 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    updateMap(lastKnownLocation);
+                    if(lastKnownLocation != null){
+                        updateMap(lastKnownLocation);
+                    }
+
                 }
             }
         }
@@ -205,6 +208,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
 
@@ -225,6 +229,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                //Log.i("riz", "Location :"+location);
                 updateMap(location);
                 if (ParseUser.getCurrentUser() != null) {
                     ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
@@ -280,6 +285,26 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
 
                 if (lastKnownLocation != null){
                     updateMap(lastKnownLocation);
+                }
+
+                if (lastKnownLocation != null){
+                    //updateMap(lastKnownLocation);
+                    Log.i("riz", "Last known location null na");
+                    if (ParseUser.getCurrentUser() != null) {
+                        ParseUser.getCurrentUser().put("location", new ParseGeoPoint(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()));
+                        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.i("riz", "Student ar last location save hoitase User class a");
+                                }
+
+                            }
+                        });
+                        //Log.i("riz", "Location :"+location);
+                    }
+                }else{
+                    Log.i("riz", "Last known location null :33");
                 }
             }
 
