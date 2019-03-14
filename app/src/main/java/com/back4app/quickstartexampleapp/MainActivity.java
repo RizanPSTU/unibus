@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
@@ -42,11 +44,17 @@ public class MainActivity extends AppCompatActivity {
         TextView driverTxt = (TextView) findViewById(R.id.textView2);
         TextView studentTxt = (TextView) findViewById(R.id.textView3);
 
+        EditText userName = (EditText) findViewById(R.id.editText);
+        EditText passWord = (EditText) findViewById(R.id.editText2);
+
+        userName.setVisibility(View.VISIBLE);
+        passWord.setVisibility(View.VISIBLE);
+
         Log.i("riz", "Start btn a click porseee ");
         //userTypeSwitch.setVisibility(View.VISIBLE);
         login.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.INVISIBLE);
-        studentTxt.setVisibility(View.VISIBLE);
+        //studentTxt.setVisibility(View.VISIBLE);
         //driverTxt.setVisibility(View.VISIBLE);
 
         if(ParseUser.getCurrentUser() == null){
@@ -77,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
         //Button startBtn = (Button) findViewById(R.id.startBtn);
         //Button login = (Button) findViewById(R.id.login);
 
+        final EditText userName = (EditText) findViewById(R.id.editText);
+        final EditText passWord = (EditText) findViewById(R.id.editText2);
+
+        final String userNameS = userName.getText().toString();
+        final String passWordS = passWord.getText().toString();
+
         Log.i("riz", "User type True driver or False Student-->"+String.valueOf(userTypeSwitch.isChecked()));
         String userType ="student";
 
@@ -85,20 +99,48 @@ public class MainActivity extends AppCompatActivity {
         }
         if(ParseUser.getCurrentUser() !=null) {
             ParseUser.getCurrentUser().put("studentOrDriver", userType);
-            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        if (userTypeSwitch.isChecked()) {
-                            Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
-                        } else {
-                            Log.i("riz", "Parse ar studentOrDriver a save hoiilo student ");
-                        }
-                        changeActivity();
 
-                    }
+            if(userNameS !=null && passWordS !=null){
+                Log.i("riz", "User --->"+userNameS);
+                Log.i("riz", "Password --->"+passWordS);
+                if((userNameS.equals("sarthoksetu@gmail.com"))  && (passWordS.equals("12345"))){
+                    //changeActivity();
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                    Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
+                                    Intent intent = new Intent(getApplicationContext(),StudentActivity.class);
+                                    Log.i("riz", "Student Map activity on hoiise");
+                                    startActivity(intent);
+                            }else{
+                                Toast.makeText(MainActivity.this, "No internet", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                }else if((userNameS.equals("hossainjakir5960@gmail.com"))  && (passWordS.equals("12345"))){
+                    //changeActivity();
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
+                                Intent intent = new Intent(getApplicationContext(),StudentActivity.class);
+                                Log.i("riz", "Student Map activity on hoiise");
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(MainActivity.this, "No internet", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                } else{
+                    Toast.makeText(MainActivity.this, "Username or Password Wrong", Toast.LENGTH_LONG).show();
                 }
-            });
+
+            }
+
         }else{
             Log.i("riz", "Current user null ");
         }

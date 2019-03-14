@@ -208,6 +208,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -276,7 +277,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             Toast.makeText(this, "SDK < 23", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(this, "SDK > 23", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "SDK > 23", Toast.LENGTH_SHORT).show();
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1 );
             }else{
