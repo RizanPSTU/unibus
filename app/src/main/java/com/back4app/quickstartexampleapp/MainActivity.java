@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         TextView driverTxt = (TextView) findViewById(R.id.textView3);
 
         Log.i("riz", "Start btn a click porseee ");
-        userTypeSwitch.setVisibility(View.VISIBLE);
+        //userTypeSwitch.setVisibility(View.VISIBLE);
         login.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.INVISIBLE);
         studentTxt.setVisibility(View.VISIBLE);
-        driverTxt.setVisibility(View.VISIBLE);
+        //driverTxt.setVisibility(View.VISIBLE);
 
         if(ParseUser.getCurrentUser() == null){
             ParseAnonymousUtils.logIn(new LogInCallback() {
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("riz", "User type True driver or False Student-->"+String.valueOf(userTypeSwitch.isChecked()));
         String userType ="student";
 
-        if(userTypeSwitch.isChecked()){
+        if(false){
             userType ="driver";
         }
         if(ParseUser.getCurrentUser() !=null) {
