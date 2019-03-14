@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
         Button startBtn = (Button) findViewById(R.id.startBtn);
         Button login = (Button) findViewById(R.id.login);
-        TextView studentTxt = (TextView) findViewById(R.id.textView2);
-        TextView driverTxt = (TextView) findViewById(R.id.textView3);
+        TextView driverTxt = (TextView) findViewById(R.id.textView2);
+        TextView studentTxt = (TextView) findViewById(R.id.textView3);
 
         Log.i("riz", "Start btn a click porseee ");
         //userTypeSwitch.setVisibility(View.VISIBLE);
