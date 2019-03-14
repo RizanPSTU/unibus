@@ -31,7 +31,8 @@ public class ScheduleActivity extends AppCompatActivity {
             handler.postDelayed(this,5000);
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Schedule");
-            query.setLimit(15);
+            query.setLimit(30);
+            query.orderByAscending("pos");
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> objects, ParseException e) {
