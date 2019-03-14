@@ -18,8 +18,6 @@ import com.parse.SaveCallback;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     public void changeActivity(){
         if(ParseUser.getCurrentUser().get("studentOrDriver").equals("student")){
             Intent intent = new Intent(getApplicationContext(),StudentActivity.class);
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        if (userTypeSwitch.isChecked()) {
+                        if (true) {
                             Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
                         } else {
                             Log.i("riz", "Parse ar studentOrDriver a save hoiilo student ");
