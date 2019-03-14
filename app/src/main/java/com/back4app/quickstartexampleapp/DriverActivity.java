@@ -190,6 +190,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
         TextView busDriving = (TextView) findViewById(R.id.busDriving);
+        Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
 
         objectidS= (String) ParseUser.getCurrentUser().get("objectid");
         bus=(String) ParseUser.getCurrentUser().get("busname");
@@ -310,7 +311,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                 return;
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            Toast.makeText(this, "SDK < 23", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "SDK < 23", Toast.LENGTH_SHORT).show();
         }else{
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1 );
