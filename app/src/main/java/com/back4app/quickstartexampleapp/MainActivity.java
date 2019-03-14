@@ -39,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
         Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
         Button startBtn = (Button) findViewById(R.id.startBtn);
         Button login = (Button) findViewById(R.id.login);
-        TextView studentTxt = (TextView) findViewById(R.id.textView2);
-        TextView driverTxt = (TextView) findViewById(R.id.textView3);
+        TextView driverTxt = (TextView) findViewById(R.id.textView2);
+        TextView studentTxt = (TextView) findViewById(R.id.textView3);
 
         Log.i("riz", "Start btn a click porseee ");
-        userTypeSwitch.setVisibility(View.VISIBLE);
+        //userTypeSwitch.setVisibility(View.VISIBLE);
         login.setVisibility(View.VISIBLE);
         startBtn.setVisibility(View.INVISIBLE);
-        studentTxt.setVisibility(View.VISIBLE);
+        //studentTxt.setVisibility(View.VISIBLE);
         driverTxt.setVisibility(View.VISIBLE);
 
         if(ParseUser.getCurrentUser() == null){
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("riz", "User type True driver or False Student-->"+String.valueOf(userTypeSwitch.isChecked()));
         String userType ="student";
 
-        if(userTypeSwitch.isChecked()){
+        if(true){
             userType ="driver";
         }
         if(ParseUser.getCurrentUser() !=null) {
