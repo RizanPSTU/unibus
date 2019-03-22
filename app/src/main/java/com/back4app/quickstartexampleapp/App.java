@@ -5,14 +5,17 @@ import android.app.Application;
 
 
 public class App extends Application {
+
+    ParseServerData parseServerData = new ParseServerData(); /* Need to create class of this exact name and declare methods. */
+
     @Override
     public void onCreate() {
         super.onCreate();
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId(getString(R.string.back4app_app_id))
+                .applicationId(parseServerData.getId())
                 // if defined
-                .clientKey(getString(R.string.back4app_client_key))
-                .server(getString(R.string.back4app_server_url))
+                .clientKey(parseServerData.getKey())
+                .server(parseServerData.getUrl())
                 .build()
 
         );
