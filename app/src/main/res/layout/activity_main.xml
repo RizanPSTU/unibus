@@ -38,7 +38,7 @@
         android:visibility="invisible" />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/Submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText2"
@@ -70,7 +70,6 @@
         android:layout_marginStart="100dp"
         android:layout_marginEnd="100dp"
         android:layout_toRightOf="@+id/userTypeSwitch"
-        android:text="Student"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
@@ -99,6 +98,17 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Submit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:onClick="registerBtn"
+        android:text="Register"
         android:visibility="invisible" />
 
 

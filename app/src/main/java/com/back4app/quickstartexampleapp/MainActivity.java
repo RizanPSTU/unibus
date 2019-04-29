@@ -14,13 +14,16 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    public void registerBtn(View view){
+        Intent intent = new Intent(getApplicationContext(),Register.class);
+        Log.i("riz", "Register activity a change hoitase");
+        startActivity(intent);
+    }
 
     public void changeActivity(){
         if(ParseUser.getCurrentUser().get("studentOrDriver").equals("student")){
@@ -38,24 +41,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mainParseCheck(View view){
-        Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
-        Button startBtn = (Button) findViewById(R.id.startBtn);
-        Button login = (Button) findViewById(R.id.login);
-        TextView driverTxt = (TextView) findViewById(R.id.textView2);
-        TextView studentTxt = (TextView) findViewById(R.id.textView3);
-
-        EditText userName = (EditText) findViewById(R.id.editText);
-        EditText passWord = (EditText) findViewById(R.id.editText2);
-
-        userName.setVisibility(View.VISIBLE);
-        passWord.setVisibility(View.VISIBLE);
-
-        Log.i("riz", "Start btn a click porseee ");
-        //userTypeSwitch.setVisibility(View.VISIBLE);
-        login.setVisibility(View.VISIBLE);
-        startBtn.setVisibility(View.INVISIBLE);
-        //studentTxt.setVisibility(View.VISIBLE);
-        //driverTxt.setVisibility(View.VISIBLE);
 
         if(ParseUser.getCurrentUser() == null){
             ParseAnonymousUtils.logIn(new LogInCallback() {
@@ -76,6 +61,27 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("riz", "Agey kono session chiilo na kintu agey anoymous login null na");
             }
         }
+
+        Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
+        Button startBtn = (Button) findViewById(R.id.startBtn);
+        Button login = (Button) findViewById(R.id.Submit);
+        Button register = (Button) findViewById(R.id.register);
+        TextView driverTxt = (TextView) findViewById(R.id.textView2);
+        TextView studentTxt = (TextView) findViewById(R.id.textView3);
+
+        EditText userName = (EditText) findViewById(R.id.editText);
+        EditText passWord = (EditText) findViewById(R.id.editText2);
+
+        userName.setVisibility(View.VISIBLE);
+        passWord.setVisibility(View.VISIBLE);
+
+        Log.i("riz", "Start btn a click porseee ");
+        //userTypeSwitch.setVisibility(View.VISIBLE);
+        login.setVisibility(View.VISIBLE);
+        register.setVisibility(View.VISIBLE);
+        startBtn.setVisibility(View.INVISIBLE);
+        //studentTxt.setVisibility(View.VISIBLE);
+        //driverTxt.setVisibility(View.VISIBLE);
     }
 
     public  void getStarted(View view) // login button click korle ai function click hy :33
@@ -103,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             if(userNameS !=null && passWordS !=null){
                 Log.i("riz", "User --->"+userNameS);
                 Log.i("riz", "Password --->"+passWordS);
-                if((userNameS.equals("sarthoksetu@gmail.com"))  && (passWordS.equals("12345"))){
+                if((userNameS.equals("1"))  && (passWordS.equals("1"))){
                     //changeActivity();
                     ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
                         @Override
@@ -145,6 +151,13 @@ public class MainActivity extends AppCompatActivity {
             Log.i("riz", "Current user null ");
         }
 
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        Log.i("riz", "Back btn press korse");
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
