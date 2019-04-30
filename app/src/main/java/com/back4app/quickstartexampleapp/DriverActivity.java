@@ -74,7 +74,33 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         //Log.i("riz", "Driver Logout hoilo");
         //ParseUser.logOutInBackground();
         //ParseUser.logOut();
-        
+
+        ParseUser.getCurrentUser().put("active","");
+        ParseUser.getCurrentUser().put("busname","");
+        ParseUser.getCurrentUser().put("objectid","");
+        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    ParseUser.logOutInBackground(new LogOutCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null){
+                                Log.i("riz", "Logout hoitase");
+                                Toast.makeText(DriverActivity.this, "Logout successful", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                            }else {
+                                Toast.makeText(DriverActivity.this, "Logout error", Toast.LENGTH_LONG).show();
+
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
 
     }
 
@@ -140,7 +166,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         Log.i("riz", "Position aise --->"+position);
         Log.i("riz", "Objectid --->"+objectidS);
 
-        if (bus !=null && position != -1){
+        if (bus !=null && position != -1 && bus.length() >0){
             busObjectId =intent.getStringArrayListExtra("ObjectID");
             Log.i("riz", "Position ar objectID --->"+busObjectId.get(position));
 
@@ -162,7 +188,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             }
 
         }else {
-            if (bus ==null){
+            if (bus ==null && bus.length() >0){
                 Log.i("riz", "Bus null");
             }else{
                 Log.i("riz", "bus null ba lenght < 1 :((( prrbb ---> "+Integer.toString(bus.length()));
@@ -170,7 +196,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
         }
 
-        if (bus !=null && objectidS != null) {
+        if (bus !=null && objectidS != null && bus.length() >0 && objectidS.length() >0) {
             //busObjectId = intent.getStringArrayListExtra("ObjectID");
             //Log.i("riz", "Position ar objectID --->" + busObjectId.get(position));
 
