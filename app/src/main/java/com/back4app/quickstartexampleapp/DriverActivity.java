@@ -75,31 +75,88 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         //ParseUser.logOutInBackground();
         //ParseUser.logOut();
 
-        ParseUser.getCurrentUser().put("active","");
-        ParseUser.getCurrentUser().put("busname","");
-        ParseUser.getCurrentUser().put("objectid","");
-        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    ParseUser.logOutInBackground(new LogOutCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null){
-                                Log.i("riz", "Logout hoitase");
-                                Toast.makeText(DriverActivity.this, "Logout successful", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-                            }else {
-                                Toast.makeText(DriverActivity.this, "Logout error", Toast.LENGTH_LONG).show();
 
+        final String getObjectID = (String) ParseUser.getCurrentUser().get("objectid");
+
+        if(getObjectID != null && getObjectID.length() >0){
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Buses");
+            query.getInBackground(getObjectID, new GetCallback<ParseObject>() {
+                public void done(ParseObject object, ParseException e) {
+                    if (e == null && object != null) {
+                        //Log.i("riz", "Error null :)))");
+                        object.put("username", "nai");
+                        object.put("location", "Akhon o kori nai kicchu, ashole lagey nai akhono");
+                        object.put("active_status", "driverOFF");
+                        object.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+
+
+                                    ParseUser.getCurrentUser().put("active","");
+                                    ParseUser.getCurrentUser().put("busname","");
+                                    ParseUser.getCurrentUser().put("objectid","");
+                                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e == null) {
+                                                ParseUser.logOutInBackground(new LogOutCallback() {
+                                                    @Override
+                                                    public void done(ParseException e) {
+                                                        if (e == null){
+                                                            Log.i("riz", "Logout hoitase");
+                                                            Toast.makeText(DriverActivity.this, "Logout successful", Toast.LENGTH_LONG).show();
+                                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                            startActivity(intent);
+                                                        }else {
+                                                            Toast.makeText(DriverActivity.this, "Logout error", Toast.LENGTH_LONG).show();
+
+                                                        }
+                                                    }
+                                                });
+                                            }
+
+                                        }
+                                    });
+
+
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
+            });
+        }else{
+            ParseUser.getCurrentUser().put("active","");
+            ParseUser.getCurrentUser().put("busname","");
+            ParseUser.getCurrentUser().put("objectid","");
+            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        ParseUser.logOutInBackground(new LogOutCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null){
+                                    Log.i("riz", "Logout hoitase");
+                                    Toast.makeText(DriverActivity.this, "Logout successful", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                }else {
+                                    Toast.makeText(DriverActivity.this, "Logout error", Toast.LENGTH_LONG).show();
 
-            }
-        });
+                                }
+                            }
+                        });
+                    }
+
+                }
+            });
+        }
+
+
+
+
 
 
     }
@@ -157,7 +214,19 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
         Intent intent = getIntent();
         if(bus ==null){
-            bus = intent.getStringExtra("BUS");
+            try {
+                bus = intent.getStringExtra("BUS");
+            }catch (Exception e){
+                Log.i("riz", "bus e null");
+            }
+        }
+        if(bus !=null && bus.length() == 0){
+            try {
+                bus = intent.getStringExtra("BUS");
+            }catch (Exception e){
+                Log.i("riz", "Exception ar vitore karon.. busname faka kintu null na aita abar 1st ");
+            }
+
         }
 
 
@@ -166,7 +235,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         Log.i("riz", "Position aise --->"+position);
         Log.i("riz", "Objectid --->"+objectidS);
 
-        if (bus !=null && position != -1 && bus.length() >0){
+        if (bus !=null && position != -1){
             busObjectId =intent.getStringArrayListExtra("ObjectID");
             Log.i("riz", "Position ar objectID --->"+busObjectId.get(position));
 
@@ -186,9 +255,8 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                 });
                 //Log.i("riz", "Location :"+location);
             }
-
         }else {
-            if (bus ==null && bus.length() >0){
+            if (bus == null){
                 Log.i("riz", "Bus null");
             }else{
                 Log.i("riz", "bus null ba lenght < 1 :((( prrbb ---> "+Integer.toString(bus.length()));
@@ -201,6 +269,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             //Log.i("riz", "Position ar objectID --->" + busObjectId.get(position));
 
             busDriving.setText("You are driving " + bus);
+            buslist.setVisibility(View.INVISIBLE);
         }
 
 
