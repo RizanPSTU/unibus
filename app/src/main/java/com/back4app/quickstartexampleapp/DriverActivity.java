@@ -191,6 +191,11 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+
+        startForegroundService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+
+
         setContentView(R.layout.activity_driver);
         TextView busDriving = (TextView) findViewById(R.id.busDriving);
         Button buslist = (Button) findViewById(R.id.driverBtn);

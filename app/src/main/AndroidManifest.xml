@@ -13,7 +13,9 @@
 
 
 
+
     <application
+        android:excludeFromRecents="true"
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/busicon"
@@ -66,6 +68,11 @@
         <meta-data
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/back4app_client_key" />
+
+        <service
+            android:name="com.back4app.quickstartexampleapp.OnClearFromRecentService"
+            android:enabled="true"
+            android:stopWithTask="false" />
     </application>
 
 </manifest>
