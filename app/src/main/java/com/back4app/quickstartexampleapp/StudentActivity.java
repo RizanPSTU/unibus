@@ -127,25 +127,22 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
         });
 
 */
-        final ParseUser currentUserStu = ParseUser.getCurrentUser();
-        currentUserStu.deleteInBackground(new DeleteCallback() {
+
+        ParseUser.logOutInBackground(new LogOutCallback() {
+            @Override
             public void done(ParseException e) {
-                if (e == null) {
-                    ParseUser.logOutInBackground(new LogOutCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null){
-                                Log.i("riz", "Delete hoise and logout hoitase");
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-                    });
-                } else {
-                    Log.i("riz", "Delete hy nai logout o na");
+                if (e == null){
+                    Log.i("riz", "Logout hoitase");
+                    Toast.makeText(StudentActivity.this, "Logout successful", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(StudentActivity.this, "Logout error", Toast.LENGTH_LONG).show();
+
                 }
             }
         });
+
         //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         //startActivity(intent);
 /*
@@ -202,7 +199,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
 
     @Override
     public void onBackPressed() {
-        Log.i("riz", "Back btn press korse");
+        Log.i("riz", "Back btn press korse.. hudai kisu hoibo na :33");
     }
 
     @Override
