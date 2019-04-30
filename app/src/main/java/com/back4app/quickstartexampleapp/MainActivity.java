@@ -17,7 +17,11 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+
+
+
 public class MainActivity extends AppCompatActivity {
+
 
     public void registerBtn(View view){
         Intent intent = new Intent(getApplicationContext(),Register.class);
@@ -42,113 +46,79 @@ public class MainActivity extends AppCompatActivity {
 
     public void mainParseCheck(View view){
 
+
+        Button startBtn = (Button) findViewById(R.id.startBtn);
+        Button login = (Button) findViewById(R.id.submit);
+        Button register = (Button) findViewById(R.id.register);
+
+
+        EditText userName = (EditText) findViewById(R.id.editText);
+        EditText passWord = (EditText) findViewById(R.id.editText2);
+
+        TextView cleanandhlp = (TextView) findViewById(R.id.textView);
+        cleanandhlp.setText("Please only enter the id before @diu.edu.bd at your email.");
+
+        Log.i("riz", "Start btn a click porseee ");
         if(ParseUser.getCurrentUser() == null){
-            ParseAnonymousUtils.logIn(new LogInCallback() {
-                @Override
-                public void done(ParseUser user, ParseException e) {
-                    if(e == null){
-                        Log.i("riz", "Anonymous login hoise student or driver posondo korbe");
-                    }else{
-                        Log.i("riz", "Anonymous login failed!!!!!! ");
-                    }
-                }
-            });
+            Log.i("riz", "Current user null 1st ..... if :33 ");
+
+            userName.setVisibility(View.VISIBLE);
+            passWord.setVisibility(View.VISIBLE);
+
+
+            login.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);
+            startBtn.setVisibility(View.INVISIBLE);
+
+
         }else {
             if(ParseUser.getCurrentUser().get("studentOrDriver") != null){
                 Log.i("riz", "Agey session a j uuser type a  login hoiisilo shei activity nitasi --->"+ParseUser.getCurrentUser().get("studentOrDriver"));
                 changeActivity();
             }else {
                 Log.i("riz", "Agey kono session chiilo na kintu agey anoymous login null na");
+                cleanandhlp.setText("Before login press back button to clear previous session :)");
+                userName.setVisibility(View.VISIBLE);
+                passWord.setVisibility(View.VISIBLE);
+
+                login.setVisibility(View.VISIBLE);
+                register.setVisibility(View.VISIBLE);
+                //startBtn.setVisibility(View.INVISIBLE);
             }
         }
-
-        Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
-        Button startBtn = (Button) findViewById(R.id.startBtn);
-        Button login = (Button) findViewById(R.id.Submit);
-        Button register = (Button) findViewById(R.id.register);
-        TextView driverTxt = (TextView) findViewById(R.id.textView2);
-        TextView studentTxt = (TextView) findViewById(R.id.textView3);
-
-        EditText userName = (EditText) findViewById(R.id.editText);
-        EditText passWord = (EditText) findViewById(R.id.editText2);
-
-        userName.setVisibility(View.VISIBLE);
-        passWord.setVisibility(View.VISIBLE);
-
-        Log.i("riz", "Start btn a click porseee ");
-        //userTypeSwitch.setVisibility(View.VISIBLE);
-        login.setVisibility(View.VISIBLE);
-        register.setVisibility(View.VISIBLE);
-        startBtn.setVisibility(View.INVISIBLE);
-        //studentTxt.setVisibility(View.VISIBLE);
-        //driverTxt.setVisibility(View.VISIBLE);
     }
 
     public  void getStarted(View view) // login button click korle ai function click hy :33
     {
         Log.i("riz", "getstart botton click korse");
-        final Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
-        //Button startBtn = (Button) findViewById(R.id.startBtn);
-        //Button login = (Button) findViewById(R.id.login);
 
-        final EditText userName = (EditText) findViewById(R.id.editText);
-        final EditText passWord = (EditText) findViewById(R.id.editText2);
+        EditText userName = (EditText) findViewById(R.id.editText);
+        EditText passWord = (EditText) findViewById(R.id.editText2);
 
-        final String userNameS = userName.getText().toString();
+        String userNameS = userName.getText().toString();
         final String passWordS = passWord.getText().toString();
 
-        Log.i("riz", "User type True driver or False Student-->"+String.valueOf(userTypeSwitch.isChecked()));
+        //Log.i("riz", "User type True driver or False Student-->"+String.valueOf(userTypeSwitch.isChecked()));
         String userType ="student";
 
-        if(false){
-            userType ="driver";
-        }
-        if(ParseUser.getCurrentUser() !=null) {
-            ParseUser.getCurrentUser().put("studentOrDriver", userType);
 
-            if(userNameS !=null && passWordS !=null){
-                Log.i("riz", "User --->"+userNameS);
-                Log.i("riz", "Password --->"+passWordS);
-                if((userNameS.equals("1"))  && (passWordS.equals("1"))){
-                    //changeActivity();
-                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                    Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
-                                    Intent intent = new Intent(getApplicationContext(),StudentActivity.class);
-                                    Log.i("riz", "Student Map activity on hoiise");
-                                    startActivity(intent);
-                            }else{
-                                Toast.makeText(MainActivity.this, "No internet", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+        if(userNameS.length() > 0 && passWordS.length() > 0) {
+            userNameS = userNameS + "@diu.edu.bd";
+            ParseUser.logInInBackground(userNameS, passWordS, new LogInCallback() {
+                public void done(ParseUser user, ParseException e) {
+                    if (user != null) {
+                        // Hooray! The user is logged in.
+                        Log.i("riz", "User->>>>" + ParseUser.getCurrentUser().getUsername());
+                        Toast.makeText(MainActivity.this, "Welcome :)", Toast.LENGTH_LONG).show();
+                        changeActivity();
 
-                }else if((userNameS.equals("hossainjakir5960@gmail.com"))  && (passWordS.equals("12345"))){
-                    //changeActivity();
-                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
-                                Intent intent = new Intent(getApplicationContext(),StudentActivity.class);
-                                Log.i("riz", "Student Map activity on hoiise");
-                                startActivity(intent);
-                            }else{
-                                Toast.makeText(MainActivity.this, "No internet", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-
-                } else{
-                    Toast.makeText(MainActivity.this, "Username or Password Wrong", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Username or Password is not correct or Check your internet :)", Toast.LENGTH_LONG).show();
+                    }
                 }
-
-            }
-
+            });
         }else{
-            Log.i("riz", "Current user null ");
+            Toast.makeText(MainActivity.this, "Username or Password can't be empty :(", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -157,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        ParseUser.getCurrentUser().logOut();
         Log.i("riz", "Back btn press korse");
     }
     @Override
@@ -164,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+        ParseUser.getCurrentUser().logOut();
 
 
 

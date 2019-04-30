@@ -28,7 +28,7 @@ public class ScheduleActivity extends AppCompatActivity {
         @Override
         public void run() {
             Log.i("riz", "Bus ar list update hoitase :3 schedule ar :3333");
-            handler.postDelayed(this,5000);
+            handler.postDelayed(this,10000);
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Schedule");
             query.setLimit(30);

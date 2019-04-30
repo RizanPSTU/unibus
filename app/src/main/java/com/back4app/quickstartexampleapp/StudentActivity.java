@@ -201,6 +201,11 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     @Override
+    public void onBackPressed() {
+        Log.i("riz", "Back btn press korse");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student2);
