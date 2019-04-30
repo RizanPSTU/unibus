@@ -194,6 +194,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
         TextView busDriving = (TextView) findViewById(R.id.busDriving);
+        Button buslist = (Button) findViewById(R.id.driverBtn);
         Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
 
         objectidS= (String) ParseUser.getCurrentUser().get("objectid");
@@ -215,6 +216,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             Log.i("riz", "Position ar objectID --->"+busObjectId.get(position));
 
             busDriving.setText("You are driving "+bus);
+            buslist.setVisibility(View.INVISIBLE);
 
             if (ParseUser.getCurrentUser() != null) {
                 ParseUser.getCurrentUser().put("busname",bus);
