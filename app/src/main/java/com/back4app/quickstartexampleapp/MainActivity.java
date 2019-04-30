@@ -34,100 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void mainParseCheck(View view){
-        Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
-        Button startBtn = (Button) findViewById(R.id.startBtn);
-        Button login = (Button) findViewById(R.id.login);
-        TextView driverTxt = (TextView) findViewById(R.id.textView2);
-        TextView studentTxt = (TextView) findViewById(R.id.textView3);
 
-        Log.i("riz", "Start btn a click porseee ");
-        //userTypeSwitch.setVisibility(View.VISIBLE);
-        login.setVisibility(View.VISIBLE);
-        startBtn.setVisibility(View.INVISIBLE);
-        //studentTxt.setVisibility(View.VISIBLE);
-        driverTxt.setVisibility(View.VISIBLE);
-
-        if(ParseUser.getCurrentUser() == null){
-            ParseAnonymousUtils.logIn(new LogInCallback() {
-                @Override
-                public void done(ParseUser user, ParseException e) {
-                    if(e == null){
-                        Log.i("riz", "Anonymous login hoise student or driver posondo korbe");
-
-
-                        if(ParseUser.getCurrentUser() !=null) {
-                            ParseUser.getCurrentUser().put("studentOrDriver", "driver");
-                            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e == null) {
-                                        if (true) {
-                                            Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
-                                            //Toast.makeText(MainActivity.this, "Login hoise", Toast.LENGTH_LONG).show();
-
-                                        } else {
-                                            Log.i("riz", "Parse ar studentOrDriver a save hoiilo student ");
-                                        }
-                                        //changeActivity();
-
-                                    }
-                                }
-                            });
-                        }else{
-                            Log.i("riz", "Current user null ");
-                        }
-
-                    }else{
-                        Log.i("riz", "Anonymous login failed!!!!!! ");
-                        Toast.makeText(MainActivity.this, "No Internet :(", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }else {
-            if(ParseUser.getCurrentUser().get("studentOrDriver") != null){
-                Log.i("riz", "Agey session a j uuser type a  login hoiisilo shei activity nitasi --->"+ParseUser.getCurrentUser().get("studentOrDriver"));
-                changeActivity();
-            }else {
-                Log.i("riz", "Agey kono session chiilo na kintu agey anoymous login null na");
-                Toast.makeText(MainActivity.this, "Network problem", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
     public  void getStarted(View view) // login button click korle ai function click hy :33
     {
-        Log.i("riz", "getstart botton click korse");
-        final Switch userTypeSwitch =(Switch) findViewById(R.id.userTypeSwitch);
-        //Button startBtn = (Button) findViewById(R.id.startBtn);
-        //Button login = (Button) findViewById(R.id.login);
-
-        Log.i("riz", "User type True driver or False Student-->"+String.valueOf(userTypeSwitch.isChecked()));
-        String userType ="student";
-
-        if(true){
-            userType ="driver";
-        }
-        if(ParseUser.getCurrentUser() !=null) {
-            ParseUser.getCurrentUser().put("studentOrDriver", userType);
-            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        if (true) {
-                            Log.i("riz", "Parse ar studentOrDriver a save hoilo driver ");
-
-                        } else {
-                            Log.i("riz", "Parse ar studentOrDriver a save hoiilo student ");
-                        }
-                        changeActivity();
-
-                    }
-                }
-            });
-        }else{
-            Log.i("riz", "Current user null ");
-        }
 
     }
 
