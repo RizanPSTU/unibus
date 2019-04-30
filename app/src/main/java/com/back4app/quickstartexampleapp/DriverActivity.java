@@ -193,7 +193,6 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
         TextView busDriving = (TextView) findViewById(R.id.busDriving);
-
         Intent intent = getIntent();
         bus = intent.getStringExtra("BUS");
         position = intent.getIntExtra("POS",-1);
