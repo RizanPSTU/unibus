@@ -243,7 +243,7 @@ public class StudentActivity extends FragmentActivity implements OnMapReadyCallb
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                //Log.i("riz", "Student ar location save hoitase User class a");
+                                Log.i("riz", "Student ar location save hoitase User class a");
                             }
 
                         }
