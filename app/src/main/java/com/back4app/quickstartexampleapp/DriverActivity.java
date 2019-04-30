@@ -74,78 +74,8 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         //Log.i("riz", "Driver Logout hoilo");
         //ParseUser.logOutInBackground();
         //ParseUser.logOut();
+        
 
-        if (bus !=null && objectidS != null){
-            //Log.i("riz", "Bus list ar on click pos->"+position);
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Buses");
-            String objectId = objectidS;
-            Log.i("riz", objectId);
-            // Retrieve the object by id
-            query.getInBackground(objectId, new GetCallback<ParseObject>() {
-                public void done(ParseObject object, ParseException e) {
-                    if(e==null && object != null){
-                        //Log.i("riz", "Error null :)))");
-                        object.put("username","nai");
-                        object.put("location", "Akhon o kori nai kicchu, ashole lagey nai akhono");
-                        object.put("active_status", "driverOFF");
-                        object.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if(e == null){
-                                    Log.i("riz", "driverOFF korse abong nai dise... akhon logout korboo");
-                                    final ParseUser currentUserStu = ParseUser.getCurrentUser();
-                                    currentUserStu.deleteInBackground(new DeleteCallback() {
-                                        public void done(ParseException e) {
-                                            if (e == null) {
-                                                ParseUser.logOutInBackground(new LogOutCallback() {
-                                                    @Override
-                                                    public void done(ParseException e) {
-                                                        if (e == null){
-                                                            Log.i("riz", "Delete hoise and logout hoitase");
-                                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                            startActivity(intent);
-                                                        }
-                                                    }
-                                                });
-                                            } else {
-                                                Log.i("riz", "Delete hy nai logout o na");
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }else {
-                        Log.i("riz", "Error othoba current onject null)");
-                    }
-
-                }
-            });
-        }else {
-
-            final ParseUser currentUserStu = ParseUser.getCurrentUser();
-            currentUserStu.deleteInBackground(new DeleteCallback() {
-                public void done(ParseException e) {
-                    if (e == null) {
-                        ParseUser.logOutInBackground(new LogOutCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e == null) {
-                                    Log.i("riz", "Delete hoise and logout hoitase");
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                }
-                            }
-                        });
-                    } else {
-                        Log.i("riz", "Delete hy nai logout o na");
-                    }
-                }
-            });
-        }
-
-        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        //startActivity(intent);
     }
 
     public void driverBtn(View view) {

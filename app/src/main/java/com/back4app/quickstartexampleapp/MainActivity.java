@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,35 @@ public class MainActivity extends AppCompatActivity {
 
     public  void getStarted(View view) // login button click korle ai function click hy :33
     {
+        Log.i("riz", "getstart botton click korse");
+
+        EditText userName = (EditText) findViewById(R.id.editText1);
+        EditText passWord = (EditText) findViewById(R.id.editText2);
+
+        final String userNameS = userName.getText().toString();
+        final String passWordS = passWord.getText().toString();
+
+        //Log.i("riz", "User type True driver or False Student-->"+String.valueOf(userTypeSwitch.isChecked()));
+        String userType ="driver";
+
+
+        if(userNameS.length() > 0 && passWordS.length() > 0) {
+            ParseUser.logInInBackground(userNameS, passWordS, new LogInCallback() {
+                public void done(ParseUser user, ParseException e) {
+                    if (user != null) {
+                        // Hooray! The user is logged in.
+                        Log.i("riz", "User->>>>" + ParseUser.getCurrentUser().getUsername());
+                        Toast.makeText(MainActivity.this, "Welcome :)", Toast.LENGTH_LONG).show();
+                        changeActivity();
+
+                    } else {
+                        Toast.makeText(MainActivity.this, "Driver number or Password is not correct or Check your internet :)", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }else{
+            Toast.makeText(MainActivity.this, "Driver number or Password can't be empty :(", Toast.LENGTH_LONG).show();
+        }
 
     }
 
