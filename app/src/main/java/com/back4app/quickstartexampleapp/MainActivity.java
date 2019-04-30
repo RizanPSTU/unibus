@@ -130,6 +130,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+    @Override
+    public void onBackPressed() {
+        ParseUser.getCurrentUser().logOut();
+        Log.i("riz", "Back btn press korse");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

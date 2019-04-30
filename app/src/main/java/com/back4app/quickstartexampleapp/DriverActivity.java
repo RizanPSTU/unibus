@@ -185,6 +185,10 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         }
     }
 
+    public void onBackPressed() {
+        //ParseUser.getCurrentUser().logOut();
+        Log.i("riz", "Back btn press korse");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
