@@ -1,0 +1,17 @@
+surjomukhi 01 Route: UC - PC
+surjomukhi 02 Route: MC - PC
+surjomukhi 04 Route: Savar - PC - Mirpur-1
+surjomukhi 05 Route: C&B - MC
+surjomukhi 09 Route: Gazipur - PC
+surjomukhi 11 Route: PC - UC
+
+
+
+Rojonigondha 01 Route: UC - MC
+Rojonigondha 02 Route: Mirpur-11 - MC - PC
+
+Class - Buses
+
+property-
+ active_status
+ busname
