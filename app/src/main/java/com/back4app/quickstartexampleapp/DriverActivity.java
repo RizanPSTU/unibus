@@ -70,7 +70,6 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         lockCheck = false;
     }
 
-
     public void driverLogout(View view) {
         //Log.i("riz", "Driver Logout hoilo");
         //ParseUser.logOutInBackground();
