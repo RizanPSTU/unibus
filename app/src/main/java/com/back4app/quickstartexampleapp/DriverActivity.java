@@ -8,11 +8,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +41,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DriverActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -44,13 +49,12 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
     LocationManager locationManager;
     LocationListener locationListener;
-    String bus="";
+    String bus = "";
     int position;
-    String objectidS="";
-    boolean lockCheck =true;
+    String objectidS = "";
+    boolean lockCheck = true;
 
     ArrayList<String> busObjectId = new ArrayList<String>();
-
 
     public void lockFunc(View view){
         Log.i("riz", "Lock a click ");
@@ -59,6 +63,64 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         unlock.setVisibility(View.VISIBLE);
         lock.setVisibility(View.INVISIBLE);
         lockCheck = true;
+    }
+
+    public void fillup(View view){
+        Log.i("riz", "fill clicked !!!!");
+
+
+        ParseUser.getCurrentUser().put("capacity","true");
+        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    // free button on koira disi
+                    Button free = (Button) findViewById(R.id.freebtn);
+                    free.setVisibility(View.VISIBLE);
+
+                    // fill button off koira disi
+                    Button fill = (Button) findViewById(R.id.fillbtn);
+                    fill.setVisibility(View.INVISIBLE);
+
+                    Toast.makeText(DriverActivity.this, "Filled up!!!", Toast.LENGTH_LONG).show();
+
+                }else{
+                    Toast.makeText(DriverActivity.this, "No internet!!!", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+    }
+
+
+    public void free(View view){
+        Log.i("riz", "freeeeee  !!!!");
+
+
+
+        Log.i("riz", "fill clicked !!!!");
+
+
+        ParseUser.getCurrentUser().put("capacity","true");
+        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Button fill = (Button) findViewById(R.id.fillbtn);
+                    fill.setVisibility(View.VISIBLE);
+
+                    Button free = (Button) findViewById(R.id.freebtn);
+                    free.setVisibility(View.INVISIBLE);
+
+                    Toast.makeText(DriverActivity.this, "Free", Toast.LENGTH_LONG).show();
+
+                }else{
+                    Toast.makeText(DriverActivity.this, "No internet!!!", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
     }
 
     public void unlockFunc(View view){
@@ -191,6 +253,21 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if(lastKnownLocation != null){
                         updateMap(lastKnownLocation);
+                    }else{
+                        List<String> providers = locationManager.getProviders(true);
+                        lastKnownLocation = null;
+                        for (String provider : providers) {
+                            Location l = locationManager.getLastKnownLocation(provider);
+                            if (l == null) {
+                                Log.i("riz", "location kujtase pay naiiii .....");
+                                continue;
+                            }
+                            if (lastKnownLocation == null || l.getAccuracy() > lastKnownLocation.getAccuracy()) {
+                                // Found best last known location: %s", l);
+                                Log.i("riz", "pssisisissi lastt known location... alhamdulillah :)");
+                                lastKnownLocation = l;
+                            }
+                        }
                     }
                 }
             }
@@ -207,6 +284,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_driver);
         TextView busDriving = (TextView) findViewById(R.id.busDriving);
         Button buslist = (Button) findViewById(R.id.driverBtn);
+        Button fill = (Button) findViewById(R.id.fillbtn);
         Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
 
         objectidS= (String) ParseUser.getCurrentUser().get("objectid");
@@ -240,6 +318,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             Log.i("riz", "Position ar objectID --->"+busObjectId.get(position));
 
             busDriving.setText("You are driving "+bus);
+            fill.setVisibility(View.VISIBLE);
             buslist.setVisibility(View.INVISIBLE);
 
             if (ParseUser.getCurrentUser() != null) {
@@ -269,6 +348,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             //Log.i("riz", "Position ar objectID --->" + busObjectId.get(position));
 
             busDriving.setText("You are driving " + bus);
+            fill.setVisibility(View.VISIBLE);
             buslist.setVisibility(View.INVISIBLE);
         }
 
