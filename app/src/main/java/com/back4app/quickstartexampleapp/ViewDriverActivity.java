@@ -68,10 +68,17 @@ public class ViewDriverActivity extends AppCompatActivity {
                             for(ParseObject object:objects){
                                 ParseGeoPoint requestGeoPoint = (ParseGeoPoint) object.get("location");
                                 String busname = (String) object.get("busname");
+                                String capacity = (String) object.get("capacity");
+                                if (capacity.equals("true")){
+                                    capacity = "(Filled)";
+                                }else{
+                                    capacity = "(Empty)";
+                                }
+
                                 if(requestGeoPoint != null) {
                                     Double distanceInKM = geoPointLocation.distanceInKilometersTo(requestGeoPoint);
                                     Double distanceOneDP = (double) Math.round(distanceInKM * 10) / 10;
-                                    drivers.add(busname+" is "+distanceOneDP.toString() + " km away");
+                                    drivers.add(capacity+" "+busname+" is "+distanceOneDP.toString() + " km away");
                                     requestLatitude.add(requestGeoPoint.getLatitude());
                                     requestLongitude.add(requestGeoPoint.getLongitude());
                                     driverUsername.add((String) object.get("username"));
