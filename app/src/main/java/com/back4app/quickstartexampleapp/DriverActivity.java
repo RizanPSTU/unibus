@@ -99,10 +99,10 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
 
 
-        Log.i("riz", "fill clicked !!!!");
+        Log.i("riz", "free clicked !!!!");
 
 
-        ParseUser.getCurrentUser().put("capacity","true");
+        ParseUser.getCurrentUser().put("capacity","false");
         ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -113,7 +113,7 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
                     Button free = (Button) findViewById(R.id.freebtn);
                     free.setVisibility(View.INVISIBLE);
 
-                    Toast.makeText(DriverActivity.this, "Free", Toast.LENGTH_LONG).show();
+                    Toast.makeText(DriverActivity.this, "Free !!!", Toast.LENGTH_LONG).show();
 
                 }else{
                     Toast.makeText(DriverActivity.this, "No internet!!!", Toast.LENGTH_LONG).show();
@@ -286,6 +286,11 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
         Button buslist = (Button) findViewById(R.id.driverBtn);
         Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
 
+
+
+
+
+
         objectidS= (String) ParseUser.getCurrentUser().get("objectid");
         bus=(String) ParseUser.getCurrentUser().get("busname");
 
@@ -319,6 +324,30 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
             busDriving.setText("You are driving "+bus);
             buslist.setVisibility(View.INVISIBLE);
 
+
+            // Free or Filled up check
+            if(ParseUser.getCurrentUser().get("capacity").equals("true")){
+                // free button on koira disi
+                Button free = (Button) findViewById(R.id.freebtn);
+                free.setVisibility(View.VISIBLE);
+
+                // fill button off koira disi
+                Button fill = (Button) findViewById(R.id.fillbtn);
+                fill.setVisibility(View.INVISIBLE);
+
+                Toast.makeText(DriverActivity.this, "Filled up!!!", Toast.LENGTH_LONG).show();
+            }else {
+                Button fill = (Button) findViewById(R.id.fillbtn);
+                fill.setVisibility(View.VISIBLE);
+
+                Button free = (Button) findViewById(R.id.freebtn);
+                free.setVisibility(View.INVISIBLE);
+
+                Toast.makeText(DriverActivity.this, "Free !!!!", Toast.LENGTH_LONG).show();
+            }
+
+
+
             if (ParseUser.getCurrentUser() != null) {
                 ParseUser.getCurrentUser().put("busname",bus);
                 ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
@@ -347,6 +376,29 @@ public class DriverActivity extends FragmentActivity implements OnMapReadyCallba
 
             busDriving.setText("You are driving " + bus);
             buslist.setVisibility(View.INVISIBLE);
+
+
+            // Free or Filled up check
+            if(ParseUser.getCurrentUser().get("capacity").equals("true")){
+                // free button on koira disi
+                Button free = (Button) findViewById(R.id.freebtn);
+                free.setVisibility(View.VISIBLE);
+
+                // fill button off koira disi
+                Button fill = (Button) findViewById(R.id.fillbtn);
+                fill.setVisibility(View.INVISIBLE);
+
+                Toast.makeText(DriverActivity.this, "Filled up!!!", Toast.LENGTH_LONG).show();
+            }else {
+                Button fill = (Button) findViewById(R.id.fillbtn);
+                fill.setVisibility(View.VISIBLE);
+
+                Button free = (Button) findViewById(R.id.freebtn);
+                free.setVisibility(View.INVISIBLE);
+
+                Toast.makeText(DriverActivity.this, "Free !!!!", Toast.LENGTH_LONG).show();
+            }
+
         }
 
 
