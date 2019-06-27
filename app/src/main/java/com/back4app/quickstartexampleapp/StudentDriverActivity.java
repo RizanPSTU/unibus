@@ -54,6 +54,15 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
 
     boolean lockCheck =true;
 
+
+    public void startser(View view){
+        Log.i("riz", "start ser clicked!!!!");
+    }
+
+    public void stopser(View view){
+        Log.i("riz", "stop ser clicked!!!");
+    }
+
     public void lockFunc(View view){
         Log.i("riz", "Lock a click ");
         Button unlock = (Button) findViewById(R.id.unlock);
