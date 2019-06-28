@@ -38,6 +38,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +49,11 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
     LocationManager locationManager;
     LocationListener locationListener;
     String driverUsername;
+    Location userlocation;
     Handler handler = new Handler();
     TextView infoTextView;
+
+
 
 
     boolean lockCheck =true;
@@ -57,10 +61,18 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
 
     public void startser(View view){
         Log.i("riz", "start ser clicked!!!!");
+
+        Intent serviceIntent = new Intent(this, DistanceService.class);
+        serviceIntent.putExtra("d" , driverUsername);
+        serviceIntent.putExtra("ul" , userlocation);
+        startService(serviceIntent);
     }
 
     public void stopser(View view){
         Log.i("riz", "stop ser clicked!!!");
+        Intent serviceIntent = new Intent(this, DistanceService.class);
+        stopService(serviceIntent);
+
     }
 
     public void lockFunc(View view){
@@ -84,8 +96,11 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
     public void updateMap(Location location,ParseGeoPoint requestLocation){
         LatLng userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         LatLng driverLatLng = new LatLng(requestLocation.getLatitude(), requestLocation.getLongitude());
-        Log.i("riz", "student ar location->"+userLatLng);
-        Log.i("riz", "driver ar location ->"+driverLatLng);
+        //Log.i("riz", "student ar location->"+userLatLng);
+        //Log.i("riz", "driver ar location ->"+driverLatLng);
+
+
+
 
         if(driverLatLng == null || userLatLng == null){
             Toast.makeText(this, "Driver is offline", Toast.LENGTH_SHORT).show();
@@ -93,10 +108,12 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
             startActivity(intent);
         }
 
+        userlocation = location;
+
         final ParseGeoPoint userLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         //final ParseGeoPoint driverLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
 
-        Double distanceInKM = userLocation.distanceInMilesTo(requestLocation);
+        Double distanceInKM = userLocation.distanceInKilometersTo(requestLocation);
         Double distanceOneDP = (double) Math.round(distanceInKM * 10) / 10;
         if(distanceOneDP < 0.001){
             infoTextView.setText("Bus is almost here!!");
@@ -193,7 +210,7 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
         //LatLng studentlocation = new LatLng(intent.getDoubleExtra("studentLatitude",0), intent.getDoubleExtra("studentLongitude",0));
         //LatLng driverlocation = new LatLng(intent.getDoubleExtra("requestLatitude",0), intent.getDoubleExtra("requestLongitude",0));
         driverUsername =intent.getStringExtra("driverUsername");
-        //Log.i("riz", "Driver ar username->"+driverUsername);
+        Log.i("riz", "Driver ar username->"+driverUsername);
         //Log.i("riz", "Student ar->"+studentlocation);
        // Log.i("riz", "Driver ar->"+driverlocation);
         //mMap.addMarker(new MarkerOptions().position(driverlocation).title("Student"));
@@ -231,7 +248,7 @@ public class StudentDriverActivity extends FragmentActivity implements OnMapRead
                                         public void run() {
                                             updateMap(location,requestGeoPoint);
                                         }
-                                    },1000);
+                                    },2000);
                                 }
                             }
                         }
