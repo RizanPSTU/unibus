@@ -27,7 +27,7 @@
         android:layout_marginRight="25dp"
         android:layout_marginBottom="30dp"
         android:onClick="studentBtn"
-        android:text="Active Buses" />
+        android:text="Available bus" />
 
     <Button
         android:id="@+id/stnLogout"
@@ -51,7 +51,7 @@
         android:layout_marginStart="27dp"
         android:layout_marginBottom="36dp"
         android:onClick="unlockFunc"
-        android:text="unlock" />
+        android:text="Full map" />
 
     <Button
         android:id="@+id/lock"
@@ -62,7 +62,7 @@
         android:layout_marginStart="27dp"
         android:layout_marginBottom="36dp"
         android:onClick="lockFunc"
-        android:text="lock"
+        android:text="Current map"
         android:visibility="invisible" />
 
     <Button
