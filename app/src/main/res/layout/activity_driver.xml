@@ -29,7 +29,7 @@
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="30dp"
         android:onClick="driverBtn"
-        android:text="Bus list" />
+        android:text="All buses" />
 
 
 
@@ -71,7 +71,7 @@
         android:layout_marginStart="27dp"
         android:layout_marginBottom="36dp"
         android:onClick="unlockFunc"
-        android:text="unlock" />
+        android:text="Full map" />
 
     <Button
         android:id="@+id/lock"
@@ -82,7 +82,7 @@
         android:layout_marginStart="27dp"
         android:layout_marginBottom="36dp"
         android:onClick="lockFunc"
-        android:text="lock"
+        android:text="Current map"
         android:visibility="invisible" />
 
     <Button
